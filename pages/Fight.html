@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>Fight!</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+</head>
+<body>
+<div id="fightPage">
+    <div id="header">
+        <div id="gameName">Game of Beasts</div>
+        <div id="rightPanel" >
+            <div>{{user.name}}</div>
+            <div>
+                lvl: {{user.level}}
+                exp: {{user.exp}}
+                money: {{user.level}}
+            </div>
+        </div>
+    </div>
+    <div id="main" class="row">
+        <div id="fight" class="col">
+            <div id="fightState" class="row">
+                <div v-for="beast in beasts" v-if="beast.isFighter == true" class="col">{{beast.name}}</div>
+            </div>
+            <div id="battleField">
+                <button @click="showModalSave = true">test end 2</button>
+            </div>
+        </div>
+        <div id="beastsPanel" class="col">
+            <div v-for="beast in beasts">
+                <div>type: {{beast.type}}</div>
+                <div>name: {{beast.name}}</div>
+                <div>lvl: {{beast.level}}</div>
+            </div>
+        </div>
+
+    </div>
+
+    <modal v-if="showModalSave" @close="showModalSave = false">
+        <div slot="header">
+            <div v-if="isWin">Победа!</div>
+            <div v-else>Ну ты лох крч</div>
+        </div>
+        <div slot="body">Сохранить ход боя?</div>
+        <div slot="footer">
+            <button @click="showEnd(isWin); isBattleForSave = true; $emit('close')">Да</button>
+            <button @click="showEnd(isWin); isBattleForSave = false; $emit('close')">Нет</button>
+        </div>
+    </modal>
+    <modal v-if="showModalEnd" @close="showModalEnd = false">
+        <div slot="header">Забрать проигравших?</div>
+        <div slot="body">
+            <button @click="isSaveBeasts = true; $emit('close')">Да</button>
+            <button @click="isSaveBeasts = false; $emit('close')">Нет</button>
+        </div>
+        <div slot="footer">
+            <div v-for="failedBeast in failedBeasts">
+                <div>{{failedBeast.type}}</div>
+                <div>{{failedBeast.name}}</div>
+                <div v-if="isAlive == true">жив</div>
+                <div v-else>мертв</div>
+        </div>
+        </div>
+    </modal>
+</div>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+</body>
+<script>
+    Vue.component('modal', {
+        data: {
+            login: "",
+            password: ""
+        },
+        template: '#modal-template'
+    });
+    // Vue.component('fight', {
+    //     template: '#fight-template'
+    // });
+
+    new Vue({
+        el: '#fightPage',
+        data: {
+            beasts:[
+                {type:'dragon', name:'Drogo', level: '14', hp:100, isFighter: true, isAlive: true},
+                {type:'dragon', name:'Smaug', level: '14', hp:100, isFighter: true, isAlive: true}
+            ],
+            failedBeasts:[
+                {type:'dragon', name:'Drogo', level: '14', hp:100, isFighter: true, isAlive: true}
+            ],
+            user:{name:'Dany', level:10, exp: 1400, money: 50} ,
+            isBattleForSave: false,
+            isSaveBeasts: false,
+            isWin: true,
+            showModalSave: false,
+            showModalEnd: false
+        },
+        methods: {
+            showEnd(t){
+                if (t)
+                    showModalEnd = true
+            }
+        }
+    })
+</script>
+<script type="text/x-template" id="modal-template">
+    <transition name="modal">
+        <div class="modal-mask">
+            <div class="modal-wrapper">
+                <div class="modal-container">
+
+                    <div class="modal-header">
+                        <slot name="header">
+                        </slot>
+                    </div>
+
+                    <div class="modal-body">
+                        <slot name="body">
+                        </slot>
+                    </div>
+
+                    <div class="modal-footer">
+                        <slot name="footer">
+
+                        </slot>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </transition>
+</script>
+<!--<script type="text/x-template" id="fight-template">-->
+    <!--<transition name="fight">-->
+    <!--<div-->
+            <!--class="basic-vue-chat"-->
+            <!--@click="setEmojiPickerToggle(false)">-->
+        <!--<section class="window">-->
+            <!--<header class="window__header__container">-->
+                <!--<slot name="header">-->
+                    <!--{{ title }}-->
+                <!--</slot>-->
+            <!--</header>-->
+            <!--<section-->
+                    <!--id="window__messages__container"-->
+                    <!--class="window__messages__container">-->
+                <!--<slot>-->
+                    <!--<messages-list-->
+                            <!--:feed="feed"-->
+                            <!--:author-id="authorId"-->
+                            <!--class="messages-list" />-->
+                <!--</slot>-->
+            <!--</section>-->
+            <!--<div class="window__input__container">-->
+                <!--<slot name="input-container">-->
+                    <!--<input-container-->
+                            <!--:toggle-emoji-picker="toggleEmojiPicker"-->
+                            <!--@newOwnMessage="onNewOwnMessage"-->
+                            <!--@openEmojiPicker="onOpenEmojiPicker"-->
+                    <!--/>-->
+                <!--</slot>-->
+            <!--</div>-->
+        <!--</section>-->
+    <!--</div>-->
+    <!--</transition>-->
+<!--</script>-->
+
+<!--<script>-->
+    <!--import moment from 'moment'-->
+    <!--import { scrollToBottom } from '../../helpers/scroll.js'-->
+    <!--import MessagesList from './messages/MessagesList.vue'-->
+    <!--import InputContainer from './input/InputContainer.vue'-->
+    <!--export default {-->
+        <!--name: 'BasicVueChat',-->
+        <!--components: {-->
+            <!--MessagesList,-->
+            <!--InputContainer-->
+        <!--},-->
+        <!--props: {-->
+            <!--title: {-->
+                <!--type: String,-->
+                <!--default: 'Team Maczan',-->
+                <!--required: false-->
+            <!--},-->
+            <!--initialAuthorId: {-->
+                <!--type: Number,-->
+                <!--default: 0,-->
+                <!--required: false-->
+            <!--},-->
+            <!--attachMock: {-->
+                <!--type: Boolean,-->
+                <!--default: false,-->
+                <!--required: false-->
+            <!--},-->
+            <!--initialFeed: {-->
+                <!--type: Array,-->
+                <!--default: function () {-->
+                    <!--return []-->
+                <!--},-->
+                <!--required: false-->
+            <!--},-->
+            <!--newMessage: {-->
+                <!--type: Object,-->
+                <!--default: function () {-->
+                    <!--return {}-->
+                <!--},-->
+                <!--required: false-->
+            <!--}-->
+        <!--},-->
+        <!--data: function () {-->
+            <!--return {-->
+                <!--feed: [],-->
+                <!--authorId: 0,-->
+                <!--toggleEmojiPicker: false-->
+            <!--}-->
+        <!--},-->
+        <!--watch: {-->
+            <!--newMessage: function (newValue, oldValue) {-->
+                <!--this.pushToFeed(newValue)-->
+                <!--scrollToBottom()-->
+            <!--}-->
+        <!--},-->
+        <!--mounted () {-->
+            <!--if (this.attachMock) {-->
+                <!--import('./mocks/mock-messages-list.js')-->
+                    <!--.then(mockData => {-->
+                        <!--this.feed = mockData.default.feed-->
+                        <!--this.setAuthorId(mockData.default.authorId)-->
+                    <!--})-->
+                    <!--.catch(error => {-->
+                        <!--console.error('Failed to load mock data from file. ', error)-->
+                    <!--})-->
+            <!--} else {-->
+                <!--this.feed = this.initialFeed-->
+                <!--this.authorId = this.initialAuthorId-->
+            <!--}-->
+        <!--},-->
+        <!--methods: {-->
+            <!--setEmojiPickerToggle (toggle) {-->
+                <!--this.toggleEmojiPicker = toggle-->
+            <!--},-->
+            <!--pushToFeed (element) {-->
+                <!--this.feed.push(element)-->
+            <!--},-->
+            <!--onNewOwnMessage (message, image, imageUrl) {-->
+                <!--const newOwnMessage = {-->
+                    <!--id: this.authorId,-->
+                    <!--contents: message,-->
+                    <!--image: image,-->
+                    <!--imageUrl: imageUrl,-->
+                    <!--date: moment().format('HH:mm:ss')-->
+                <!--}-->
+                <!--this.pushToFeed(newOwnMessage)-->
+                <!--scrollToBottom()-->
+                <!--this.$emit('newOwnMessage', message)-->
+            <!--},-->
+            <!--onOpenEmojiPicker (toggle) {-->
+                <!--this.setEmojiPickerToggle(toggle)-->
+            <!--}-->
+        <!--}-->
+    <!--}-->
+<!--</script>-->
+<!--</html>-->
