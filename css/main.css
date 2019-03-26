@@ -9,7 +9,14 @@
     display: table;
     transition: opacity .3s ease;
 }
-
+html, body, #startPage, .container
+{
+    height: 100%;
+}
+/*#startPage*/
+/*{*/
+    /*background-image: url("https://cs8.pikabu.ru/post_img/big/2016/03/11/9/145771187312536347.jpg");*/
+/*}*/
 .modal-wrapper {
     display: table-cell;
     vertical-align: middle;
@@ -33,6 +40,7 @@
 
 .modal-body {
     margin: 20px 0;
+
 }
 
 .modal-default-button {

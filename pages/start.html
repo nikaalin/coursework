@@ -23,20 +23,24 @@
     <link rel="stylesheet" href="../css/main.css">
 </head>
 <body>
-<div id="startPage">
-    <div id="header" class="row">
-        <div class="col-12 text-center">
-            <h1>Game of Beasts</h1>
-        </div>
-    </div>
-    <div id="main" class="row">
-        <div id="auth" class="col-4 m-auto border border-primary text-center">
-            <h3 slot="header">Вход</h3>
-            <div v-for="item in socialNetworks" @click="showModal = true; currentNetwork = item">{{item}}</div>
+<div id="startPage" class="content-center ">
+    <div class="container   justify-content-center align-items-center d-flex flex-column">
+        <div id="header" class="row">
+            <div class="col-12 text-center bg-light text-black-50 display-1 flex-row d-flex">
+                <h1 class="display-1 text-success">Gam</h1>
+                <h1 class="display-1 text-danger">e of Beasts</h1>
 
+            </div>
         </div>
-        <div id="description" class="col-7">
-            Тут все очень классно, совсем без костылей, все работает, хороший курсач, надо принять
+        <div id="main" class="row mt-5 ">
+            <div id="auth" class="col-4 m-auto border border-success text-center rounded d-flex flex-column justify-content-center align-items-center">
+                <h3 slot="header " class="text-black-50">Вход</h3>
+                <div v-for="item in socialNetworks" class="text-black-50 btn btn-success mt-0,5 mb-1 " style="width: 50%" @click="showModal = true; currentNetwork = item">{{item}}</div>
+
+            </div>
+            <div id="description" class="col-7 bg-light rounded text-black-50">
+                <h5>Тут все очень классно, совсем без костылей, все работает, хороший курсач, надо принять</h5>
+            </div>
         </div>
     </div>
 
@@ -78,8 +82,8 @@
 
                     <div class="modal-body">
                         <slot name="body">
-                            <div><label>Логин  <input  v-model="login"> </label></div>
-                            <div><label>Пароль  <input  v-model="password"> </label></div>
+                            <div><label>Логин <input v-model="login"> </label></div>
+                            <div><label>Пароль <input v-model="password"> </label></div>
                         </slot>
                     </div>
                     <div class="modal-footer">
@@ -93,7 +97,8 @@
             </div>
         </div>
     </transition>
-</script>\
+</script>
+\
 <!--<script>-->
 <!--$(function () {-->
 <!--$("#btn2").click(function () {-->
